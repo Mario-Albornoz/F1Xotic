@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Agrandir';
+  src: url('/fonts/agrandir/PPAgrandir-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  /* Add additional font-weight and font-style declarations as needed */
+}
+
+:root {
+  font-family: 'Agrandir';
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: #EAEAEA; /* Platinum White for readability */
+  background-color: #000000; /* Jet Black for a deep dark theme */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Navigation Links */
+/* nav a {
+  color: #4b8ba0; 
+  transition: color 0.3s ease-in-out;
+} */
+
+nav .active {
+  color: #ffffff; /* Gold for active navigation */
+  font-weight: 600;
+}
+
+
+/* Body */
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #121212; /* Ensuring deep black background */
+}
+
+
+/* Buttons */
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1E1E1E; /* Carbon Grey for depth */
+  color: #EAEAEA;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+
+
+/* Media Queries */
+
+
+/* Animations */
+
+
+/* Tailwind Utility Styles */
+@layer utilities {
+
+  .welcome-box {
+    @apply p-10 text-center ;
+  }
+
+  .blue-to-black-gradient{
+    @apply bg-gradient-to-br from-[#09475c] to-[#010000]
+  }
+
+  .white-to-blue-gradient{
+    @apply bg-gradient-to-br from-[#ffff] to-[#4b8ba0]
+  }
+
+  .white-to-gray-gradient{
+    @apply bg-gradient-to-br from-[#ffff] to-[#3f3e3e]
+  }
+  
+  .shopping-cart-bg{
+    @apply bg-center bg-cover bg-no-repeat top-0 w-screen h-screen;
+    background-image: url('img/shopping-cart-bg.jpg')
+  }
+
+
+  .product-bg {
+    @apply bg-cover bg-center bg-no-repeat top-0 w-screen;
+    background-image: url('img/race-track-pits.jpg')
+  }
+
+  .background {
+    @apply mx-auto bg-cover bg-center bg-no-repeat top-0;
+    background-image: url('/img/motion-speed-effect-with-city-night.jpg');
+  }
+  
+  .login-bg {
+    @apply mx-auto top-0 bg-cover bg-center bg-no-repeat;
+    background-image: url('/img/login-bg.jpg')
+  }
+
+  .navBar-Heading {
+    @apply flex justify-between items-center py-4 px-8 mx-auto absolute top-0 bg-transparent z-10 right-0 left-0;
+  }
+  
+
+  .divider {
+    @apply border-t border-gray-700 my-4; /* Dark divider */
+  }
+
+  .block {
+    @apply outline-2 h-70 w-80 shadow-amber-50 shadow-2xl;
+  }
+
+  .product-image{
+    @apply h-175 w-130 shadow-black shadow-2xl mt-25
+  }
+  
+  .product-description-container{
+    @apply h-175 w-155 mt-25 shadow-black shadow-2xl bg-gray-800/50
+  }
+
+  .card-text{
+    @apply absolute bottom-4 left-0 px-3 py-1 rounded-md text-2xl;
+  }
+
+  .text-navbar-color{
+    @apply text-[#4b8ba0];
+  }
+
+  .product-input-box-text{
+    @apply placeholder-slate-400 text-black
+  }
+
+}
+
