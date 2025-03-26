@@ -3,10 +3,13 @@
 * Tailwind Installed
 * Node.js Installed
 
+
+
 ## Frontend Setup
 1. Clone repository
 2. **Install dependencies for the frontend**
     ```console
+    cd client
     npm install
     ```
 
@@ -21,12 +24,21 @@
 
 
 ## Backend SetUp
-3. **Open another terminal to run the backend
 
 4. **Install dependecies**
     ```console
+    cd ..
+    cd server
     npm install
     ```
+
+5. **Create a .env file with the following information**
+    ```console
+    MONGO_URI="mongodb+srv://marioalbandino:Hola1234.@ausix.upnoh.mongodb.net/F1Xotics?retryWrites=true&w=majority&appName=Ausix"
+    PORT=1337
+    JWT_SECRET = MySecretKey
+    ```
+    This credentials for both JWT are only used in this project that is only meant to run locally, therefore that is why I share the entire Mongo URI and JWT key. The databases attached to that mongo db account will probably be deleted soon too or the credentials might change.
 5. **Run backend**
     ```console
     npm run dev
