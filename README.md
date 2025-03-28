@@ -2,6 +2,7 @@
 * React + vite installed
 * Tailwind Installed
 * Node.js Installed
+* Have a sanbox personal Paypal Account to make transactions
 
 
 

@@ -2,18 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import { dropDownAnimation } from "../utils/animations";
 import { NavLink } from "react-router-dom";
 import { deleteOrderItem, fetchOrderItems, createOrder } from "../api/api";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const ShoppingCart = () => {
   const selectedRef = useRef();
   const [orders, setOrders] = useState([]);
   const [message, setMessage] = useState("");
-
+  const [isCheckout, setIsCheckout] = useState(false); // Toggle PayPal checkout
 
   useEffect(() => {
     dropDownAnimation("20%", "0%", 0.75, null, selectedRef.current);
 
     fetchOrderItems().then(setOrders);
   }, []);
+
   // Function to remove order item
   const handleRemoveOrder = async (id) => {
     try {
@@ -26,21 +28,18 @@ const ShoppingCart = () => {
     }
   };
 
-  // Function to create order with item IDs
+  // Function to create order
   const handleCreateOrder = async () => {
-    if (!orders) return;
+    if (!orders.length) return;
 
-    // Create an array of order IDs
     let orderIds = orders.map(order => order._id);
 
     try {
-      const orderData = {
-        items: orderIds
-      };
-      
+      const orderData = { items: orderIds };
       await createOrder(orderData);
-      setMessage("Order Created Successfully!")
-      // delete order items to reset the shopping cart
+      setMessage("Order Created Successfully!");
+
+      // Clear cart after order
       await Promise.all(orders.map(order => deleteOrderItem(order._id)));
       setOrders([]);
     } catch (err) {
@@ -48,6 +47,8 @@ const ShoppingCart = () => {
     }
   };
 
+  // Calculate total price dynamically
+  const totalAmount = orders.reduce((total, order) => total + order.subTotal, 0).toFixed(2);
 
   return (
     <section className="relative shopping-cart-bg h-full w-full px-14 py-16 items-center justify-center">
@@ -57,29 +58,40 @@ const ShoppingCart = () => {
           Go to Order history
         </NavLink>
       </div>
+
       <div ref={selectedRef} className="flex flex-col h-auto w-full p-4 gap-7 rounded-md">
         {orders.map((order, index) => (
           <OrderCard
             key={index}
-            id={order._id} // Ensure correct ID
+            id={order._id}
             product={order.product} 
             quantity={order.quantity}
-            price={order.subTotal} // Ensure proper subtotal
-            removeOrder={() => handleRemoveOrder(order._id)} // Pass function to remove item (not functioning for now)
+            price={order.subTotal}
+            removeOrder={() => handleRemoveOrder(order._id)}
           />
         ))}
       </div>
-      <div className="flex items-center justify-end p-4 gap-10">
-        <button className="flex items-center h-20" onClick={handleCreateOrder}>
-            Check out
-        </button> 
-        {/* display success message */}
-        {message && <p className="text-lg">{message}</p>}
+
+      <div className="flex flex-col items-end p-4 gap-6">
+        <h2 className="text-3xl font-bold">Total: ${totalAmount}</h2>
+        <button className="flex items-center h-20 bg-blue-500 text-white px-5 py-3 rounded-md" onClick={() => setIsCheckout(true)}>
+          Check out
+        </button>
+
+        {isCheckout && (
+          <div className="mt-4 w-full">
+            <PayPalCheckout
+              amount={totalAmount} 
+              onSuccess={handleCreateOrder} 
+            />
+          </div>
+        )}
+
+        {message && <p className="text-lg text-green-500">{message}</p>}
       </div>
     </section>
   );
 };
-
 
 
 // Order card component
@@ -104,6 +116,31 @@ const OrderCard = ({product,quantity, price, id, removeOrder }) => {
         <h2>Total Amount: ${price}</h2>
       </div>
     </div>
+  );
+};
+
+//handle paypal transactions with paypal sandbox, passing the amount of the shooping cart 
+const PayPalCheckout = ({ amount, onSuccess }) => {
+  return (
+    <PayPalScriptProvider options={{ "client-id": "AR6it4PFa5onX4kwSNV1UPo-0NUvvW7k2oz1p_wjxuCJ5HoALnX4Lsx6eZRrhd3YZdD_Z8l2aVfkZwLr", currency: "USD" }}>
+      <PayPalButtons 
+        createOrder={(data, actions) => {
+          return actions.order.create({
+            purchase_units: [
+              {
+                amount: { value: amount }, 
+              },
+            ],
+          });
+        }}
+        onApprove={(data, actions) => {
+          return actions.order.capture().then((details) => {
+            alert("Transaction completed by " + details.payer.name.given_name);
+            onSuccess(); // Trigger order creation in backend
+          });
+        }}
+      />
+    </PayPalScriptProvider>
   );
 };
 
