@@ -62,7 +62,7 @@ const ShoppingCart = () => {
           <OrderCard
             key={index}
             id={order._id} // Ensure correct ID
-            products={order.product} // Pass the product array
+            product={order.product} 
             quantity={order.quantity}
             price={order.subTotal} // Ensure proper subtotal
             removeOrder={() => handleRemoveOrder(order._id)} // Pass function to remove item (not functioning for now)
@@ -83,17 +83,17 @@ const ShoppingCart = () => {
 
 
 // Order card component
-const OrderCard = ({ products, quantity, price, id, removeOrder }) => {
+const OrderCard = ({product,quantity, price, id, removeOrder }) => {
   return (
     <div className="flex h-40 px-4 p-4 items-center justify-between text-black outline-1 bg-white/80 rounded-md">
       {/* Left column */}
       <div className="flex flex-col h-full items-start justify-center gap-5">
-        {products.map((product, index) => (
-          <div key={index}>
+        
+          <div>
             <h1 className="text-2xl">Product: {product.name}</h1>
             <h2 className="font-extralight">Breakdown: {product.breakdown}</h2>
           </div>
-        ))}
+       
         <h2>Quantity: {quantity}</h2>
       </div>
       {/* Right column */}

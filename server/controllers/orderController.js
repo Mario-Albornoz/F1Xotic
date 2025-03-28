@@ -36,14 +36,14 @@ export const getOrders = async (req, res) => {
     try {
         const userId = req.user.id
         const orders = await Order.find({user: userId})
-        .populate({
-            path: 'items',
-            populate: {
-                path: 'product', // Populate the product field inside OrderItem
-                model: 'Product', // Specify the model for the product
-            }
-        })
-        .populate("user");
+        // .populate({
+        //     path: 'items',
+        //     populate: {
+        //         path: 'product', // Populate the product field inside OrderItem
+        //         model: 'Product', // Specify the model for the product
+        //     }
+        // })
+        // .populate("user");
         
         res.json(orders);
     } catch (err) {

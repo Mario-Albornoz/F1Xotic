@@ -28,8 +28,6 @@ const OrderHistory = () => {
               <OrderCard
                 key={index}
                 id={order._id}
-                //map over each item to retrive the names of the product in the order
-                name={order.items.map(item => item.product._id).join(", ")}
                 price={order.totalAmount}
               />
             ))}
@@ -39,7 +37,7 @@ const OrderHistory = () => {
     };
 
 
-const OrderCard = ({ name, price, id}) => {
+const OrderCard = ({ price, id}) => {
     const selectedDiv = useRef();
 
     useEffect(()=>{
@@ -51,7 +49,6 @@ const OrderCard = ({ name, price, id}) => {
         {/* left column of the card */}
         <div className="flex flex-col h-full items-start justify-center gap-5">
             <p className="text-sm">Order-Id: {id}</p>
-            <h1 className="text-2xl">Product: {name}</h1>
         </div>
         {/* right column of the card */}
         <div className="flex flex-col h-full items-start justify-center gap-8">
