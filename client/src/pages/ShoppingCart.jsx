@@ -1,17 +1,53 @@
 import { useEffect, useRef, useState } from "react";
 import { dropDownAnimation } from "../utils/animations";
 import { NavLink } from "react-router-dom";
-import { deleteOrderItem, fetchOrderItems } from "../api/api";
+import { deleteOrderItem, fetchOrderItems, createOrder } from "../api/api";
 
 const ShoppingCart = () => {
   const selectedRef = useRef();
   const [orders, setOrders] = useState([]);
+  const [message, setMessage] = useState("");
+
 
   useEffect(() => {
     dropDownAnimation("20%", "0%", 0.75, null, selectedRef.current);
 
     fetchOrderItems().then(setOrders);
   }, []);
+  // Function to remove order item
+  const handleRemoveOrder = async (id) => {
+    try {
+      await deleteOrderItem(id);
+      // Refresh the cart after deletion
+      const updatedOrders = await fetchOrderItems();
+      setOrders(updatedOrders);
+    } catch (err) {
+      console.error("Error removing order item:", err);
+    }
+  };
+
+  // Function to create order with item IDs
+  const handleCreateOrder = async () => {
+    if (!orders) return;
+
+    // Create an array of order IDs
+    let orderIds = orders.map(order => order._id);
+
+    try {
+      const orderData = {
+        items: orderIds
+      };
+      
+      await createOrder(orderData);
+      setMessage("Order Created Successfully!")
+      // delete order items to reset the shopping cart
+      await Promise.all(orders.map(order => deleteOrderItem(order._id)));
+      setOrders([]);
+    } catch (err) {
+      console.error("Error creating order:", err);
+    }
+  };
+
 
   return (
     <section className="relative shopping-cart-bg h-full w-full px-14 py-16 items-center justify-center">
@@ -29,25 +65,22 @@ const ShoppingCart = () => {
             products={order.product} // Pass the product array
             quantity={order.quantity}
             price={order.subTotal} // Ensure proper subtotal
-            removeOrder={() => handleRemoveOrder(order._id)} // Pass function to remove item
+            removeOrder={() => handleRemoveOrder(order._id)} // Pass function to remove item (not functioning for now)
           />
         ))}
+      </div>
+      <div className="flex items-center justify-end p-4 gap-10">
+        <button className="flex items-center h-20" onClick={handleCreateOrder}>
+            Check out
+        </button> 
+        {/* display success message */}
+        {message && <p className="text-lg">{message}</p>}
       </div>
     </section>
   );
 };
 
-// Function to remove order item
-const handleRemoveOrder = async (id) => {
-  try {
-    await deleteOrderItem(id);
-    // Refresh the cart after deletion
-    const updatedOrders = await fetchOrderItems();
-    setOrders(updatedOrders);
-  } catch (err) {
-    console.error("Error removing order item:", err);
-  }
-};
+
 
 // Order card component
 const OrderCard = ({ products, quantity, price, id, removeOrder }) => {

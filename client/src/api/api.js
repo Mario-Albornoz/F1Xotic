@@ -26,6 +26,25 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+// Register user
+export const registerUser = async (userData) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+// Login user
+export const loginUser = async (credentials) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
 
 // Fetch all products
 export const fetchProducts = async () => {
@@ -56,7 +75,10 @@ export const createOrder = async (orderData) => {
     const response = await axiosInstance.post('orders/create', orderData);
     return response.data
 }
-
+// Delete a product
+export const deleteProduct = async (id) => {
+  await axiosInstance.delete(`/products/${id}`);
+};
 //fetch orderItems
 export const fetchOrderItems = async () =>{
     const response = await axiosInstance.get('/order-items/');
@@ -74,29 +96,9 @@ export const deleteOrderItem = async (id) => {
     await axiosInstance.delete(`/order-items/${id}`)
 }
 
-// Delete a product
-export const deleteProduct = async (id) => {
-  await axiosInstance.delete(`/products/${id}`);
-};
 
-// Register user
-export const registerUser = async (userData) => {
-  try {
-    const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
-};
 
-// Login user
-export const loginUser = async (credentials) => {
-  try {
-    const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
-};
+
+
 
 
