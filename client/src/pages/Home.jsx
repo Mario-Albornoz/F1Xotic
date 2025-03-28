@@ -1,19 +1,20 @@
 import { Canvas } from "@react-three/fiber"
 
 import HomeScene from "../components/HomeScene"
-import { useEffect, useRef } from "react"
-import { dropDownAnimation } from "../utils/animations";
+import { useEffect, useRef , useState, Suspense} from "react"
+import { useInView } from "react-intersection-observer";
+import HomeFooterScene from "../components/HomeFooterScene";
 
 
 const Home = () => {
-
+    const [isFooterVisible, setIsFooterVisible] = useState(false);
+    const { ref: footerRef, inView: footerInView } = useInView({ threshold: 0.2 });
     const selectedRef = useRef();
 
-    //import on-scroll animation
-
-    // useEffect(() => {
-        
-    // }, []);
+    // Cache footer model once it's loaded
+    useEffect(() => {
+        if (footerInView) setIsFooterVisible(true);
+    }, [footerInView]);
 
     return (
         <section ref = {selectedRef} className="bg-black">
@@ -27,7 +28,9 @@ const Home = () => {
                     </h1>
                 </div>
                 <Canvas className="w-screen h-screen bg-transparent">
-                    <HomeScene />
+                    <Suspense fallback={null}>
+                        <HomeScene />
+                    </Suspense>
                 </Canvas>
             </section>
 
@@ -51,10 +54,20 @@ const Home = () => {
                     </h2>
                 
                     <img className="h-full w-1/3" src='./img/F1CarImages/Ferrari1960.jpg' alt="Ferrari 1960 F1 car" />
-                </div>
+                </div>   
             <section />
+            {/* Footer with Lazy Loaded Model */}
+            <footer ref={footerRef} className="relative flex items-center justify-center h-120 w-screen mt-125">
+                {isFooterVisible && (
+                    <Canvas className="w-full h-full">
+                        <Suspense fallback={null}>
+                            <HomeFooterScene />
+                        </Suspense>
+                    </Canvas>
+                )}
+            </footer>
         </section>
-  )
+    );
 }
 
 export default Home
