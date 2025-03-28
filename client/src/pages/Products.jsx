@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { gsap } from 'gsap'; 
 import { dropDownAnimation } from '../utils/animations';
-import  { fetchProducts, createProduct } from '../api/api.js'
+import  { fetchProducts, createProduct, fetchProductByName } from '../api/api.js'
 
 
 const Products = () => {
@@ -29,10 +29,25 @@ const Products = () => {
       fetchProducts().then(setProducts);
     }, []);
 
+  // Handle search from SearchBar if no query return all items
+  const handleSearch = (query) => {
+    if (!query){
+      fetchProducts().then(setProducts)
+    }else{
+    fetchProductByName(query)
+      .then((data) => {
+        setProducts(data); // Update the products state with the fetched data
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+    }
+  };
+
   return (
     <div className='login-bg h-screen w-screen '>
       {/* add product button */}
-      <div className=' absolute flex w-full px-17 items-bottom justify-start mt-33'>
+      <div className=' absolute flex w-full px-17 items-bottom justify-between mt-33 h-10 z-20'>
         {/* transition colors when hovering over the button */}
         <button 
           className={`transition-colors duration-1000 z-20
@@ -44,10 +59,11 @@ const Products = () => {
           {isProdAddVisible ? <p>Back to Shop </p>: <p>Add product</p>}
           
         </button>
+
+        <SearchBar onSearch={handleSearch} />
       </div>
-      
       {isProdAddVisible ? <AddProductCard/> : 
-      <section ref={selectedRef} className='grid grid-cols-3 px-2 py-10 place-items-center gap-11'>
+      <section ref={selectedRef} className='grid grid-cols-3 px-2 py-20 place-items-center gap-11'>
       {(products.map((product, index) => (
         <ProductCard 
           key={index}
@@ -182,6 +198,38 @@ const ProductCard = ({id, name, category, image, description}) => {
   )
 }
 
+const SearchBar = ({ onSearch }) => {
+  const [query, setQuery] = useState("");
+
+  const handleInputChange = (event) => {
+    setQuery(event.target.value);
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    onSearch(query); 
+  };
+
+  return (
+    <div className="flex items-center justify-center p-4">
+      <form onSubmit={handleSearch} className="flex items-center w-full max-w-sm">
+        <input
+          type="text"
+          value={query}
+          onChange={handleInputChange}
+          placeholder="Search..."
+          className="w-full p-2 border border-gray-300 rounded-l-md focus:outline-none"
+        />
+        <button
+          type="submit"
+          className="p-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none"
+        >
+          Search
+        </button>
+      </form>
+    </div>
+  );
+};
 
 
 

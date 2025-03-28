@@ -72,12 +72,24 @@ export const fetchOrderHistory = async () => {
 
 //create order 
 export const createOrder = async (orderData) => {
-    const response = await axiosInstance.post('orders/create', orderData);
+    const response = await axiosInstance.post('/orders/create', orderData);
     return response.data
 }
 // Delete a product
 export const deleteProduct = async (id) => {
   await axiosInstance.delete(`/products/${id}`);
+};
+//fetch products by name
+export const fetchProductByName = async (name) => {
+  try {
+    const response = await axiosInstance.get('/products/search', {
+      params: { name }
+    });
+    return response.data; // Return the fetched products
+  } catch (error) {
+    console.error("Error fetching products by name:", error.message);
+    throw error; // Optionally throw the error for further handling in the component
+  }
 };
 //fetch orderItems
 export const fetchOrderItems = async () =>{
