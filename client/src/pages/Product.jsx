@@ -57,23 +57,6 @@ const Product = () => {
           <p className="font-medium text-xl py-4">{product.description}</p>
         </h2>
 
-        {/* Quantity Selector */}
-        <div className="flex items-center gap-2">
-          <button
-            className="bg-gray-200 px-3 py-1 rounded-md"
-            onClick={() => setQuantity(Math.max(1, quantity - 1))}
-          >
-            -
-          </button>
-          <span className="text-xl font-medium">{quantity}</span>
-          <button
-            className="bg-gray-200 px-3 py-1 rounded-md"
-            onClick={() => setQuantity(quantity + 1)}
-          >
-            +
-          </button>
-        </div>
-
         {/* Add to Cart Button */}
         <button
           className="flex items-center h-10 rounded-md bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 disabled:bg-gray-400"

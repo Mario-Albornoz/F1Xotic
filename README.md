@@ -4,7 +4,11 @@
 * Node.js Installed
 * Have a sanbox personal Paypal Account to make transactions
 
+## Important
+* To use most of the websites features like; Adding items to the shopping cart, creating products, etc 
+you must be logged in. To create a user you just need a name and password, which will be stored as a hash in the database.
 
+* When creating product and going back to the shop page you might need to refresh the page one or two times before the new product appears.
 
 ## Frontend Setup
 1. Clone repository

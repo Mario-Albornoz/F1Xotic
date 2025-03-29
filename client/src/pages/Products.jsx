@@ -12,7 +12,6 @@ const Products = () => {
   const [count, setCount] = useState(0)
   const [isProdAddVisible, setIsProdAddVisible] = useState(false)
   const [products, setProducts] = useState([])
-  const image = "/img/F1CarImages/Mclaren2024.jpg";
 
 
   const changeColorAndShowProductCreationCard = () => {
@@ -70,7 +69,7 @@ const Products = () => {
           id={product._id}
           name={product.name}
           category={product.category}
-          image={image}   //{product.image}
+          image={product.image}   //{product.image}
           description={product.description}
           />)))}
       </section>
@@ -136,7 +135,26 @@ const AddProductCard = ({ name = '', category = '', image = '', description = ''
             value={productData.category}
             onChange={handleChange}
           />
-          {/* <input className="product-input-box-text border p-2 rounded" type="text" name="image" placeholder="Image URL" value={productData.image} onChange={handleChange} /> */}
+          {/* Give users the option to pick the image for their car */}
+          <input 
+            className="product-input-box-text border p-2 rounded" 
+            type="text" 
+            name="image" 
+            placeholder="Select or enter an image URL" 
+            value={productData.image} 
+            onChange={handleChange} 
+            list="image-options"
+          />
+
+          <datalist id="image-options">
+            <option value="/img/F1CarImages/Ferrari1960.jpg">Ferrari 1960</option>
+            <option value="/img/F1CarImages/McLaren2024.jpg">McLaren MP24</option>
+            <option value="/img/F1CarImages/RedBull2024.jpg">Red Bull RB24</option>
+            <option value="/img/F1CarImages/Mercedes2024.jpg">Mercedes WC24</option>
+            <option value="/img/F1CarImages/Lotus1960.jpg">Mercedes WC24</option>
+            <option value="/img/F1CarImages/Renault2005.jpg">Mercedes WC24</option>
+          </datalist>
+
           <textarea
             className="product-input-box-text border p-2 rounded"
             name="description"

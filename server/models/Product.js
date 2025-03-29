@@ -11,7 +11,7 @@ const ProductSchema = new Schema({
     category: { type: String },
     description: { type: String },
     breakdown: { type: String, required: true },
-    // image: { type: mongoose.SchemaTypes.Url },
+    image: { type: String, required: true },
 });
 
 const Product = mongoose.model("Product", ProductSchema);
