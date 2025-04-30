@@ -15,7 +15,7 @@ you must be logged in. To create a user you just need a name and password, which
 2. **Install dependencies for the frontend**
     ```console
     cd client
-    npm install
+    npm install --legacy-peer-deps
     ```
 
 3. **Start the Frontend Server**
@@ -37,7 +37,7 @@ you must be logged in. To create a user you just need a name and password, which
     npm install
     ```
 
-5. **Create a .env file with the following information**
+5. **Create a .env file with the following information inside the server folder**
     ```console
     MONGO_URI="mongodb+srv://marioalbandino:Hola1234.@ausix.upnoh.mongodb.net/F1Xotics?retryWrites=true&w=majority&appName=Ausix"
     PORT=1337
