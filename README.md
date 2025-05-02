@@ -19,8 +19,8 @@ you must be logged in. To create a user you just need a name and password, which
     ```
 3. **Install Tailwind css**
    ```console
-       npm set legacy-peer-deps true
-       npm install tailwind@latest
+   npm set legacy-peer-deps true
+   npm install tailwind@latest
    ```
 5. **Start the Frontend Server**
    
