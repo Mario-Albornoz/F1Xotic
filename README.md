@@ -17,8 +17,12 @@ you must be logged in. To create a user you just need a name and password, which
     cd client
     npm install --legacy-peer-deps
     ```
-
-3. **Start the Frontend Server**
+3. **Install Tailwind css**
+   ```console
+       npm set legacy-peer-deps true
+       npm install tailwind@latest
+   ```
+5. **Start the Frontend Server**
    
    Run the front end:
    ```console
